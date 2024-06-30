@@ -22,12 +22,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [cookies, setCookie] = useCookies(["theme"]);
   const [theme, setTheme] = useState<Theme>(cookies.theme || "light");
 
+  // reset body class theme
   useEffect(() => {
     setCookie("theme", theme, { path: "/" });
     document.body.classList.remove("light", "dark");
     document.body.classList.add(theme);
   }, [theme, setCookie]);
 
+  // change theme between dark and light
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
