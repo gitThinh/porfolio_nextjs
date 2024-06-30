@@ -3,11 +3,19 @@
 import { Switch } from "@headlessui/react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "@/contexts/ThemeProvider";
+import { useEffect, useState } from "react";
 
 export default function SwitchTheme() {
   const { theme, toggleTheme } = useTheme();
+  const [isClient, setIsClient] = useState(false);
 
-  if (!window) return;
+  //check csr
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // block this element render ssr
+  if (!isClient) return null;
 
   return (
     <Switch
