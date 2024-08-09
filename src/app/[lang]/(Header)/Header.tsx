@@ -2,14 +2,17 @@ import DropDownlanguage from "@/components/DropDownLanguage";
 import Navbar from "./Navbar";
 import { FC } from "react";
 import SwitchTheme from "@/components/SwitchTheme";
+import { useThemeMode } from "@/utils/useThemeMode";
 
-interface HeaderProps {}
+interface HeaderProps {
+  lang: string;
+}
 
-const Header: FC<HeaderProps> = () => {
+const Header: FC<HeaderProps> = ({ lang }) => {
   return (
-    <div className="hidden w-full flex-row items-center justify-between lg:flex">
-      <Navbar />
-      <div className="flex flex-row gap-3 items-center">
+    <div className="container hidden w-full flex-row items-center justify-between py-5 lg:flex">
+      <Navbar lang={lang} />
+      <div className="flex flex-row items-center gap-3">
         <DropDownlanguage />
         <SwitchTheme />
       </div>

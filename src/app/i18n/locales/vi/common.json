@@ -1,4 +1,12 @@
 {
     "home": "Trang chủ",
-    "language": "Ngôn ngữ"
+    "language": "Ngôn ngữ",
+
+    "nav": {
+        "skill": "Kỹ năng",
+        "about": "Giới thiệu",
+        "opensource": "Dự án",
+        "resume": "Hồ sơ",
+        "contact": "Liên hệ"
+    }
 }

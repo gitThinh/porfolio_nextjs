@@ -38,19 +38,20 @@ i18next
   });
 
 export function useTranslation<
-  Ns extends FlatNamespace,
+  Ns extends FlatNamespace | FlatNamespace[],
   // @ts-ignore
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
 >(
-  lng: string,
   ns?: Ns,
   options?: UseTranslationOptions<KPrefix>,
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> {
   const [cookies, setCookie] = useCookies([cookieName]);
   const ret = useTranslationOrg(ns, options);
   const { i18n } = ret;
-  if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
-    i18n.changeLanguage(lng);
+  const configLang = i18n.language || getOptions().lng;
+
+  if (runsOnServerSide && configLang && i18n.resolvedLanguage !== configLang) {
+    i18n.changeLanguage(configLang);
   } else {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
@@ -61,17 +62,19 @@ export function useTranslation<
     }, [activeLng, i18n.resolvedLanguage]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      if (!lng || i18n.resolvedLanguage === lng) return;
-      i18n.changeLanguage(lng);
-    }, [lng, i18n]);
+      if (!configLang || i18n.resolvedLanguage === configLang) return;
+      i18n.changeLanguage(configLang);
+    }, [configLang, i18n]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       // @ts-ignore
-      if (cookies.i18next === lng) return;
-      setCookie(cookieName, lng, { path: "/" });
+      if (cookies.i18next === configLang) return;
+      setCookie(cookieName, configLang, { path: "/" });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       // @ts-ignore
-    }, [lng, cookies.i18next]);
+    }, [configLang, cookies.i18next]);
   }
   return ret;
 }
