@@ -5,6 +5,7 @@ const nextConfig = {
     appDir: true,
     typedRoutes: true,
   },
+  swcMinify: true,
   images: {
     remotePatterns: [
       {

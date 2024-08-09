@@ -1,4 +1,12 @@
 {
     "home": "Home",
-    "language": "Language"
+    "language": "Language",
+
+    "nav": {
+        "skill": "Skill",
+        "about": "About",
+        "opensource": "Open Source",
+        "resume": "Resume",
+        "contact": "Contact"
+    }
 }

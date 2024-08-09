@@ -1,12 +1,12 @@
 import "../globals.css";
 
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 
 import { dir } from "i18next";
 import { languages, fallbackLng } from "@/app/i18n/config-lang";
 import { useTranslation } from "@/app/i18n";
-import TranslationProvider from "./TranslationProvider";
-import ThemeProvider from "@/contexts/ThemeProvider";
+import { Suspense } from "react";
+import Header from "./(Header)/Header";
 
 export async function generateMetadata({
   params: { lang },
@@ -17,16 +17,14 @@ export async function generateMetadata({
 }) {
   if (languages.indexOf(lang) < 0) lang = fallbackLng;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { t } = await useTranslation(lang);
+  const { t } = await useTranslation(lang, ["common"]);
   return {
     // @ts-ignore
     title: t("common:home"),
   };
 }
 
-const i18nNamespaces = ["common"];
-
-const inter = Inter({
+const openSans = Open_Sans({
   subsets: ["latin"],
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
@@ -46,17 +44,14 @@ export default async function RootLayout({
   };
 }) {
   return (
-    <html lang={lang} dir={dir(lang)} className="mdl-js">
-      <body className={inter.className}>
-        <ThemeProvider>
-          <TranslationProvider
-            lng={lang}
-            namespaces={i18nNamespaces}
-            options={{}}
-          >
+    <html lang={lang} dir={dir(lang)} className={`${openSans.className}`}>
+      <body className="bg-neutral-200 text-base text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
+        <Suspense>
+          <>
+            <Header lang={lang} />
             {children}
-          </TranslationProvider>
-        </ThemeProvider>
+          </>
+        </Suspense>
       </body>
     </html>
   );
